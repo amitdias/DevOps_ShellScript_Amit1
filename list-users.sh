@@ -1,42 +1,50 @@
+
 #!/bin/bash
 
-# GitHub API URL
-API_URL="https://api.github.com"
+# GITHUB URL
+Api_URL= "https://api.github.com"
 
-# GitHub username and personal access token
-USERNAME=$username
-TOKEN=$token
+# Authenticating using username and token
+USERNAME= $username
+TOKEN= $token
 
-# User and Repository information
-REPO_OWNER=$1
-REPO_NAME=$2
+#Provide Organisation name and repository name
+REPO_OWNER= $1
+REPO_NAME= $2
 
-# Function to make a GET request to the GitHub API
-function github_api_get {
-    local endpoint="$1"
-    local url="${API_URL}/${endpoint}"
+# Function to make a Get request to GETHUB API
 
-    # Send a GET request to the GitHub API with authentication
-    curl -s -u "${USERNAME}:${TOKEN}" "$url"
+function GITHUB_getAPI  {
+local endpoint= "$1"
+local URL= "${Api_URL}/${endpoint}"
+
+# API get request with authentication
+
+curl -s -u "URL" "${USERNAME}:${TOKEN}"
+
 }
 
-# Function to list users with read access to the repository
-function list_users_with_read_access {
-    local endpoint="repos/${REPO_OWNER}/${REPO_NAME}/collaborators"
+# Fetch a list of users with readonly access
 
-    # Fetch the list of collaborators on the repository
-    collaborators="$(github_api_get "$endpoint" | jq -r '.[] | select(.permissions.pull == true) | .login')"
+function fetch_list_users_readaccess{
 
-    # Display the list of collaborators with read access
-    if [[ -z "$collaborators" ]]; then
-        echo "No users with read access found for ${REPO_OWNER}/${REPO_NAME}."
-    else
-        echo "Users with read access to ${REPO_OWNER}/${REPO_NAME}:"
-        echo "$collaborators"
-    fi
+                            local endpoint=  "repos/${REPO_OWNER}/${REPO_NAME}/collaborators"
+
+# Fetching list of collaborators
+
+                            local collaborators= "$(GITHUB_getAPI "endpoint")
+
+if[[-z collaborators]]; then
+      echo "No users with read only access for ${REPO_OWNER}/${REPO_NAME}."
+else 
+      echo "Users with read only access for ${REPO_OWNER}/${REPO_NAME}:"
+      echo "collaborators"
+fi 
+
 }
 
-# Main script
 
-echo "Listing users with read access to ${REPO_OWNER}/${REPO_NAME}..."
-list_users_with_read_access
+# Main Script
+
+echo "Listing users with read oly access for ${REPO_OWNER}/${REPO_NAME}...""
+fetch_list_users_readaccess
